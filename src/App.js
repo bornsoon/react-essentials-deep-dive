@@ -30,7 +30,8 @@ function App() {
 
   const activePlayer = deriveActivePlayer(gameTurns);
 
-  let gameBoard = initialGameBoard;
+  // Deep Copy... 얕은 복사이면 게임판 초기화 안됨!!
+  let gameBoard = [...initialGameBoard.map((array) => [...array])];
 
   // 빈 배열이면 아래 코드는 동작 X
   for (const turn of gameTurns) {
@@ -59,6 +60,8 @@ function App() {
     }
   }
 
+  const hasDraw = gameTurns.length === 9 && !winner;
+
   function handleSelectSquare(rowIndex, colIndex) {
     // setActivePlayer((curActivePlayer) => (curActivePlayer === "X" ? "O" : "X"));
     setGameTurns((prevTurns) => {
@@ -73,6 +76,11 @@ function App() {
 
       return updatedTurns;
     });
+  }
+
+  function handleRestart() {
+    // Rematch => GameTurns 초기화 (로그를 다 지우는 것과 동일)
+    setGameTurns([]);
   }
 
   return (
@@ -90,7 +98,9 @@ function App() {
             isActive={activePlayer === "O"}
           />
         </ol>
-        {winner && <GameOver winner={winner} />}
+        {(winner || hasDraw) && (
+          <GameOver winner={winner} onRestart={handleRestart} />
+        )}
         <GameBoard onSelectSquare={handleSelectSquare} board={gameBoard} />
       </div>
       <Log turns={gameTurns} />
