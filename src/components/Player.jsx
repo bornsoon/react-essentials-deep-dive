@@ -1,6 +1,11 @@
 import { useState } from "react";
 
-export default function Player({ initialName, symbol, isActive }) {
+export default function Player({
+  initialName,
+  symbol,
+  isActive,
+  onChangeName,
+}) {
   const [playerName, setPlayerName] = useState(initialName);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -11,6 +16,10 @@ export default function Player({ initialName, symbol, isActive }) {
     // setIsEditing(!isEditing); => false? NO! shecules a state update to true
     setIsEditing((editing) => !editing); // **함수 형태로 상태값 업데이트해야함!!**
     // setIsEditing((editing) => !editing);
+    if (isEditing) {
+      // isEditing === truthy => Save 누
+      onChangeName(symbol, playerName);
+    }
   }
 
   function handleChange(event) {
@@ -26,6 +35,9 @@ export default function Player({ initialName, symbol, isActive }) {
     );
     btnCaption = "Save";
   }
+
+  // playerName 상태를 끌어올리면 (App으로 보내면)
+  // input이 발생할 때마다 App에 있는 요소들이 수시로 재평가됨
 
   return (
     <li className={isActive ? "active" : undefined}>
