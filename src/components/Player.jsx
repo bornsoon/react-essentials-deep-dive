@@ -27,13 +27,13 @@ export default function Player({
   }
 
   let editablePlayerName = <span className="player-name">{playerName}</span>;
-  let btnCaption = "Edit";
+  // let btnCaption = "Edit";
 
   if (isEditing) {
     editablePlayerName = (
       <input type="text" required value={playerName} onChange={handleChange} />
     );
-    btnCaption = "Save";
+    // btnCaption = "Save";
   }
 
   // playerName 상태를 끌어올리면 (App으로 보내면)
